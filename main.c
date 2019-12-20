@@ -8,29 +8,33 @@
 #include <avr/io.h>
 #include <util/delay.h>
  
- 
+#define GPIO_PORT   PORTB
+#define GPIO_DDR    DDRB
+
+static void GPIO_config(void)
+{
+    // PB3 output
+    GPIO_DDR = 0b00001000;
+}
+
+static void GPIO_toggle(uint8_t pin)
+{
+    uint8_t mask = (1 << pin);
+    GPIO_PORT ^= mask;
+}
+
 int main (void)
 {
-  // set PB3 to be output
-	DDRB = 0b00001000;
-  while (1) {
-    
-    // flash# 1:
-    // set PB3 high
-    PORTB = 0b00001000; 
-    _delay_ms(500);
-    // set PB3 low
-    PORTB = 0b00000000;
-    _delay_ms(500);
+    // Setup
+    GPIO_config();
 
-    // flash# 2:
-    // set PB3 high
-    PORTB = 0b00001000; 
-    _delay_ms(1000);
-    // set PB3 low
-    PORTB = 0b00000000;
-    _delay_ms(1000);
-  }
+    // Do forever
+    while (1) 
+    {
+        // Toggle PB3 high
+        GPIO_toggle(3);
+        _delay_ms(250);
+    }
  
   return 1;
 }
