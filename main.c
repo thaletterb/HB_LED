@@ -33,7 +33,7 @@ int main (void)
     {
         // Toggle PB3 high
         GPIO_toggle(3);
-        _delay_ms(250);
+        _delay_ms(5);
     }
  
   return 1;
